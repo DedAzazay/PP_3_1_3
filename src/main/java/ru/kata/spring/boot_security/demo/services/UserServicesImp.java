@@ -19,8 +19,8 @@ public class UserServicesImp implements UserServices {
     }
 
     @Override
-    public void saveUser(User user) {
-        userDao.saveUser(user);
+    public User saveUser(User user) {
+        return userDao.saveUser(user);
     }
 
     @Override
