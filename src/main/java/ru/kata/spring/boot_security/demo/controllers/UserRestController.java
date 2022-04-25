@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,16 +33,19 @@ public class UserRestController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('users:read')")
     public List<User> allUsers() {
         return userServices.userList();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('users:read')")
     public User oneUser(@PathVariable("id") Long id) {
         return userServices.show(id);
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasAuthority('users:write')")
     public User createUser(@RequestBody User user)
     {
         return userServices.saveUser(user);
@@ -49,12 +53,14 @@ public class UserRestController {
 
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('users:write')")
     public User updateUser(@RequestBody User user, @PathVariable("id") Long userId)
     {
         return userServices.updateUser(user, userId);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('users:write')")
     public void deleteUser(@PathVariable("id") Long id) {
         userServices.deleteUserById(id);
     }
