@@ -36,8 +36,9 @@ public class UserDaoImp implements UserDao{
 
     @Override
     @Transactional
-    public void saveUser(User user) {
+    public User saveUser(User user) {
         entityManager.persist(user);
+        return entityManager.find(User.class, user.getId());
     }
 
     @Override
