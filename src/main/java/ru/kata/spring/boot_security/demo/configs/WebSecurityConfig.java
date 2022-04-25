@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import ru.kata.spring.boot_security.demo.model.Permission;
 import ru.kata.spring.boot_security.demo.model.Role;
 
 @Configuration
@@ -24,10 +25,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers( HttpMethod.GET, "/users/**")
-                                    .hasAnyRole(Role.ADMIN.name(), Role.USER.name())
-                .antMatchers( HttpMethod.POST, "/users/**").hasRole(Role.ADMIN.name())
-                .antMatchers( HttpMethod.PATCH, "/users/**").hasRole(Role.ADMIN.name())
-                .antMatchers( HttpMethod.DELETE, "/users/**").hasRole(Role.ADMIN.name())
+                    .hasAuthority(Permission.USERS_READ.getPermission())
+                .antMatchers( HttpMethod.POST, "/users/**")
+                    .hasAuthority(Permission.USERS_WRITE.getPermission())
+                .antMatchers( HttpMethod.PATCH, "/users/**")
+                    .hasAuthority(Permission.USERS_WRITE.getPermission())
+                .antMatchers( HttpMethod.DELETE, "/users/**")
+                    .hasAuthority(Permission.USERS_WRITE.getPermission())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -41,12 +45,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 User.builder()
                         .username("admin")
                         .password(passwordEncoder().encode("admin"))
-                        .roles(Role.ADMIN.name())
+                        .authorities(Role.ADMIN.getAuthorities())
                         .build(),
                 User.builder()
                         .username("user")
                         .password(passwordEncoder().encode("user"))
-                        .roles(Role.USER.name())
+                        .authorities(Role.USER.getAuthorities())
                         .build()
         );
     }
