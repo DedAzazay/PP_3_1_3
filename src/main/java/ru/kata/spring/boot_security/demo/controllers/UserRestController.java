@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/admin")
 public class UserRestController {
 
     private final UserServices userServices;

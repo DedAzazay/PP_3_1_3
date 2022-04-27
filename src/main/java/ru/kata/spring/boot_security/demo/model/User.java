@@ -3,6 +3,8 @@ package ru.kata.spring.boot_security.demo.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +33,13 @@ public class User {
     @Email(message = "Email should be valid")
     @Column
     private String email;
+
+    @Column()
+    private String password;
+
+    @Enumerated(value=EnumType.STRING)
+    @Column()
+    private Role role;
 
     public User() {
     }
@@ -71,5 +80,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
