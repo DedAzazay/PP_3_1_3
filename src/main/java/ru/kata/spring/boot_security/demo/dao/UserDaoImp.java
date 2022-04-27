@@ -35,6 +35,11 @@ public class UserDaoImp implements UserDao{
     }
 
     @Override
+    public User showByEmail(String email) {
+        return entityManager.find(User.class, email);
+    }
+
+    @Override
     @Transactional
     public User saveUser(User user) {
         entityManager.persist(user);

@@ -16,5 +16,7 @@ public interface UserDao {
 
     User show(Long userId);
 
+    User showByEmail(String email);
+
     void deleteUserById(Long userId);
 }

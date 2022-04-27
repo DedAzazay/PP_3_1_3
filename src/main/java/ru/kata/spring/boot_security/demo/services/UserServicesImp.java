@@ -40,6 +40,11 @@ public class UserServicesImp implements UserServices {
     }
 
     @Override
+    public User showByEmail(String email) {
+        return userDao.showByEmail(email);
+    }
+
+    @Override
     public void deleteUserById(Long userId) {
         userDao.deleteUserById(userId);
     }
