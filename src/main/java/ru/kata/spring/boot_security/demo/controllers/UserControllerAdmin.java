@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,63 +24,72 @@ import javax.validation.Valid;
 
 
 @Controller
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping()
+public class UserControllerAdmin {
 
     private final UserServices userServices;
 
     @Autowired
-    public UserController(UserServices userServices) {
+    public UserControllerAdmin(UserServices userServices) {
         this.userServices = userServices;
     }
 
-    @GetMapping()
+
+    @GetMapping("/admin")
     public String allUsers(Model model) {
         model.addAttribute("users", userServices.userList());
         return "/list";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/{id}")
     public String oneUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("users", userServices.show(id));
         return "/show";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/admin/new")
     public String newUser(@ModelAttribute("user") User user) {
         return "/new";
     }
 
-    @PostMapping()
+    @PostMapping("/admin")
     public String createUser(@ModelAttribute("user") @Valid User user,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/new";
         }
         userServices.saveUser(user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/admin/{id}/edit")
     public String editUser(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userServices.show(id));
         return "/edit";
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/admin/{id}")
     public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                                 @PathVariable("id") Long userId) {
         if (bindingResult.hasErrors()){
             return "/edit";
         }
         userServices.updateUser(user, userId);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userServices.deleteUserById(id);
-        return "redirect:/users";
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/user")
+    public String standardUser(Model model) {
+        model.addAttribute("users",
+                userServices.showByEmail(SecurityContextHolder
+                        .getContext().getAuthentication().getName()));
+        return "/user";
     }
 
     @ExceptionHandler(Exception.class)
