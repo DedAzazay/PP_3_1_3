@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -34,6 +35,7 @@ public class User {
     @Column
     private String email;
 
+    @NotEmpty(message = "Password should not be empty")
     @Column()
     private String password;
 
