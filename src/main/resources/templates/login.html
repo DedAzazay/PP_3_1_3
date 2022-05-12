@@ -1,23 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href=../css/bootstrap.min.css>
+  <link rel="stylesheet" href="../css/main.css">
+
   <title>Login</title>
 </head>
-<body>
-<div class="container">
-  <form class="form-signin" method="post" action="/auth/login">
-    <h2 class="form-signin-heading">Login</h2>
-    <p>
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
-    </p>
-    <p>
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-    </p>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-  </form>
-</div>
+<body class="login-page">
+
+
+<header class="header">
+  <div class="container" style="max-width: 370px" >
+
+    <form class="form-signin" method="post" action="/auth/login">
+     <div class="row">
+        <h2 class="form-signin-heading">Please sign in</h2>
+      </div>
+
+     <div class="row-cols-sm-1">
+         <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+         <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+         <button class="btn btn-primary btn-lg" type="submit">Button</button>
+      </div>
+    </form>
+
+  </div>
+</header>
+
 </body>
 </html>
