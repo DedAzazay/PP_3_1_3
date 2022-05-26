@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import javax.validation.Valid;
-
+import java.util.List;
 
 
 @Controller
@@ -36,15 +38,18 @@ public class UserControllerAdmin {
 
 
     @GetMapping("/admin")
-    public String allUsers(Model model) {
-        model.addAttribute("users", userServices.userList());
-        return "/list";
+    public String adminUsers(Model model) {
+        model.addAttribute("users", userServices.showByEmail(SecurityContextHolder
+                .getContext().getAuthentication().getName()));
+        model.addAttribute("listUser", userServices.userList());
+        model.addAttribute("dao", userServices);
+        return "/admin";
     }
 
-    @GetMapping("/admin/{id}")
-    public String oneUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("users", userServices.show(id));
-        return "/show";
+    @GetMapping("/admin/show")
+    @ResponseBody
+    public User oneUser(Long id) {
+        return userServices.show(id);
     }
 
     @GetMapping("/admin/new")
@@ -69,11 +74,8 @@ public class UserControllerAdmin {
     }
 
     @PatchMapping("/admin/{id}")
-    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+    public String updateUser(@ModelAttribute("user") User user,
                                 @PathVariable("id") Long userId) {
-        if (bindingResult.hasErrors()){
-            return "/edit";
-        }
         userServices.updateUser(user, userId);
         return "redirect:/admin";
     }
