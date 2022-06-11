@@ -10,7 +10,7 @@ public interface UserDao {
 
     User saveUser(User user);
 
-    User updateUser(User user, Long userId);
+    User updateUser(User user);
 
     List<User> userList();
 
@@ -18,5 +18,5 @@ public interface UserDao {
 
     User showByEmail(String email);
 
-    void deleteUserById(Long userId);
+    void deleteUser(User user);
 }

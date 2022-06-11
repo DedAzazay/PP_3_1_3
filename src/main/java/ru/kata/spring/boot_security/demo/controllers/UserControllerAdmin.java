@@ -42,7 +42,7 @@ public class UserControllerAdmin {
         model.addAttribute("users", userServices.showByEmail(SecurityContextHolder
                 .getContext().getAuthentication().getName()));
         model.addAttribute("listUser", userServices.userList());
-        model.addAttribute("dao", userServices);
+
         return "/admin";
     }
 
@@ -52,37 +52,23 @@ public class UserControllerAdmin {
         return userServices.show(id);
     }
 
-    @GetMapping("/admin/new")
-    public String newUser(@ModelAttribute("user") User user) {
-        return "/new";
-    }
 
     @PostMapping("/admin")
-    public String createUser(@ModelAttribute("user") @Valid User user,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/new";
-        }
+    public String createUser(User user) {
         userServices.saveUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/{id}/edit")
-    public String editUser(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userServices.show(id));
-        return "/edit";
-    }
 
-    @PatchMapping("/admin/{id}")
-    public String updateUser(@ModelAttribute("user") User user,
-                                @PathVariable("id") Long userId) {
-        userServices.updateUser(user, userId);
+    @PatchMapping("/admin/update")
+    public String updateUser(User user) {
+        userServices.updateUser(user);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/admin/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userServices.deleteUserById(id);
+    @DeleteMapping("/admin/delete")
+    public String deleteUser(User user) {
+        userServices.deleteUser(user);
         return "redirect:/admin";
     }
 
