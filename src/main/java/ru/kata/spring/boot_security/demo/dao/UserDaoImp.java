@@ -55,20 +55,23 @@ public class UserDaoImp implements UserDao{
 
     @Override
     @Transactional
-    public User updateUser(User user, Long userId) {
-        User updateUser = userRepository.getById(userId);
-        user.setId(updateUser.getId());
+    public User updateUser(User user) {
+        User oldUser = entityManager.find(User.class, user.getId());
+        if (!user.getPassword().isEmpty()) {
         user.setPassword(
-                passwordEncoder.matches(user.getPassword(), updateUser.getPassword()) ?
-                        updateUser.getPassword() : passwordEncoder.encode(user.getPassword()));
+                passwordEncoder.matches(user.getPassword(), oldUser.getPassword()) ?
+                        oldUser.getPassword() : passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(oldUser.getPassword());
+        }
         entityManager.merge(user);
         return entityManager.find(User.class, user.getId());
     }
 
     @Override
     @Transactional
-    public void deleteUserById(Long userId) {
-        userRepository.deleteById(userId);
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 
 }

@@ -24,8 +24,8 @@ public class UserServicesImp implements UserServices {
     }
 
     @Override
-    public User updateUser(User user, Long userId) {
-        userDao.updateUser(user, userId);
+    public User updateUser(User user) {
+        userDao.updateUser(user);
         return user;
     }
 
@@ -45,7 +45,7 @@ public class UserServicesImp implements UserServices {
     }
 
     @Override
-    public void deleteUserById(Long userId) {
-        userDao.deleteUserById(userId);
+    public void deleteUser(User user) {
+        userDao.deleteUser(user);
     }
 }

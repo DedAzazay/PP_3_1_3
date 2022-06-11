@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import javax.validation.Valid;
-
+import java.util.List;
 
 
 @Controller
@@ -36,51 +38,37 @@ public class UserControllerAdmin {
 
 
     @GetMapping("/admin")
-    public String allUsers(Model model) {
-        model.addAttribute("users", userServices.userList());
-        return "/list";
+    public String adminUsers(Model model) {
+        model.addAttribute("users", userServices.showByEmail(SecurityContextHolder
+                .getContext().getAuthentication().getName()));
+        model.addAttribute("listUser", userServices.userList());
+
+        return "/admin";
     }
 
-    @GetMapping("/admin/{id}")
-    public String oneUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("users", userServices.show(id));
-        return "/show";
+    @GetMapping("/admin/show")
+    @ResponseBody
+    public User oneUser(Long id) {
+        return userServices.show(id);
     }
 
-    @GetMapping("/admin/new")
-    public String newUser(@ModelAttribute("user") User user) {
-        return "/new";
-    }
 
     @PostMapping("/admin")
-    public String createUser(@ModelAttribute("user") @Valid User user,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/new";
-        }
+    public String createUser(User user) {
         userServices.saveUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/{id}/edit")
-    public String editUser(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userServices.show(id));
-        return "/edit";
-    }
 
-    @PatchMapping("/admin/{id}")
-    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                                @PathVariable("id") Long userId) {
-        if (bindingResult.hasErrors()){
-            return "/edit";
-        }
-        userServices.updateUser(user, userId);
+    @PatchMapping("/admin/update")
+    public String updateUser(User user) {
+        userServices.updateUser(user);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/admin/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userServices.deleteUserById(id);
+    @DeleteMapping("/admin/delete")
+    public String deleteUser(User user) {
+        userServices.deleteUser(user);
         return "redirect:/admin";
     }
 

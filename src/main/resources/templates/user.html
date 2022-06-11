@@ -2,17 +2,93 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>USER</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+	<title>User page</title>
 </head>
 <body>
+	<header class="header">
+		<div class="container-fluid" style="background: black; color: white; height: 35px;">
+			<div class="row justify-content-between">
+				<div class="col-auto" style="font-size: large; padding-top: 5px">
+					<div style="font-weight: bold; float: left" th:text="${users.getEmail()}">examale@gmail.com</div>
+					<div style="float: left"> with role: </div>
+					<div th:text="${users.getRole().name()}" style="float: right">ROLE</div>
+				</div>
+				<div class="col-1" style="text-align: right">
+					<form action="/auth/logout" method="POST">
+						<button class="btn btn-dark" style="color: #adb5bd" type="submit">Logout</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</header>
+	<section>
+		<div class="row">
+			<div class="col-2" style="padding-right: 0px">
+				<button type="button" class="btn btn-primary" style="min-width: 100%; margin-top: 15px">
+					User
+				</button>
+			</div>
+			<div class="col" style="background: whitesmoke; height: 1000px">
+				<div class="row" style="margin-right: 50px;">
+					<h1 style="margin-left: 15px">
+						User information-page
+					</h1>
+					<table class="table table-bordered" style="margin-left: 30px; border: gray;">
+						<thead>
+							<tr>
+								<th scope="col">
+									About user
+								</th>
+							</tr>
+							</thead>
+						<tbody>
+							<tr>
+								<td style="background: white">
+									<table class="table table-striped" style="background: white;">
+										<thead>
+											<tr style="font-weight: bold;">
+												<th scope="row">ID</th>
+												<th scope="row">First Name</th>
+												<th scope="row">Last Name</th>
+												<th scope="row">Email</th>
+												<th scope="row">Role</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td th:text="${users.getId()}">
+													UserId
+												</td>
+												<td th:text="${users.getName()}">
+													UserName
+												</td>
+												<td th:text="${users.getLastName()}">
+													UserLastName
+												</td>
+												<td th:text="${users.getEmail()}">
+													UserEmail
+												</td>
+												<td th:text="${users.getRole().name()}">
+													UserRole
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
 
-<p th:text="${users.getName() + ', ' + users.getLastName()}">VALUE</p>
-<p th:text="${'Email: ' + users.getEmail()}">VALUE</p>
-<p th:text="${users.getId()}">VALUE</p>
-
-
-<form action="/auth/logout" method="POST">
-    <button type="submit">logout</button>
-</form>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
 </body>
 </html>
